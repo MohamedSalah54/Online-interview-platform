@@ -1,7 +1,7 @@
 "use client"
 
 import { CallControls, CallingState, CallParticipantsList, PaginatedGridLayout, SpeakerLayout, useCallStateHooks } from "@stream-io/video-react-sdk";
-import { LayoutListIcon, LoaderIcon, Users, UsersIcon } from "lucide-react";
+import { LayoutListIcon, LoaderIcon, UsersIcon } from "lucide-react";
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./ui/resizable";

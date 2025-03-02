@@ -12,8 +12,10 @@ const RecordingCard = ( {recording}: {recording:CallRecording}) => {
         try {
             await navigator.clipboard.writeText(recording.url)
             toast.success("Recording link copied to clipboard")
-        } catch (error) {
+        } catch (err) {
             toast.error("Failed to copy link to clipboard")
+            console.log(err);
+            
         }
     }
 

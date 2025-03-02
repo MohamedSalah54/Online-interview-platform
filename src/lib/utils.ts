@@ -1,34 +1,41 @@
 import { clsx, type ClassValue } from "clsx";
-import { addHours, intervalToDuration, isAfter, isBefore, isWithinInterval } from "date-fns";
+import { addHours, intervalToDuration, isBefore, isWithinInterval } from "date-fns";
 import { twMerge } from "tailwind-merge";
 import { Doc } from "../../convex/_generated/dataModel";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-
-type Interview = Doc<"interviews">;
 type User = Doc<"users">;
+type Interview = Doc<"interviews">;
 
-export const groupInterviews = (interviews: Interview[]) => {
-  if (!interviews) return {};
+interface GroupedInterviews {
+  succeeded: Interview[];
+  failed: Interview[];
+  completed: Interview[];
+  upcoming: Interview[];
+}
 
-  return interviews.reduce((acc: any, interview: Interview) => {
-    const date = new Date(interview.startTime);
-    const now = new Date();
+export const groupInterviews = (interviews: Interview[]): GroupedInterviews => {
+  return interviews.reduce<GroupedInterviews>(
+    (acc, interview) => {
+      const date = new Date(interview.startTime);
+      const now = new Date();
 
-    if (interview.status === "succeeded") {
-      acc.succeeded = [...(acc.succeeded || []), interview];
-    } else if (interview.status === "failed") {
-      acc.failed = [...(acc.failed || []), interview];
-    } else if (isBefore(date, now)) {
-      acc.completed = [...(acc.completed || []), interview];
-    } else if (isAfter(date, now)) {
-      acc.upcoming = [...(acc.upcoming || []), interview];
-    }
+      if (interview.status === "succeeded") {
+        acc.succeeded.push(interview);
+      } else if (interview.status === "failed") {
+        acc.failed.push(interview);
+      } else if (date < now) {
+        acc.completed.push(interview);
+      } else {
+        acc.upcoming.push(interview);
+      }
 
-    return acc;
-  }, {});
+      return acc;
+    },
+    { succeeded: [], failed: [], completed: [], upcoming: [] } // Initial value
+  );
 };
 
 export const getCandidateInfo = (users: User[], candidateId: string) => {

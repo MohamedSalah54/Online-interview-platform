@@ -28,6 +28,8 @@ const Dashboard = () => {
       toast.success(`Interview marked as ${status}`)
     } catch (err) {
       toast.error("Failed to update status")
+      console.log(err);
+      
     }
   }
 
@@ -60,7 +62,7 @@ const Dashboard = () => {
                   const startTime = new Date(interview.startTime);
                   
                   return(
-                    <Card className="hover:shadow-md transition-all">
+                    <Card  key={interview._id} className="hover:shadow-md transition-all">
                       {/* candidate info */}
                         <CardHeader className="p-4">
                           <div className="flex items-center gap-3">

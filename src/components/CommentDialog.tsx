@@ -39,7 +39,9 @@ const CommentDialog = ({ interviewId }: { interviewId: Id<"interviews"> }) => {
             setRating("3")
             setIsOpen(false)
         } catch (err) {
-            toast.error("Faild to submit comment")
+            toast.error("Faild to submit comment");
+            console.log(err);
+            
         }
     }
 
